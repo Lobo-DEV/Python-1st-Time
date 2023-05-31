@@ -5,6 +5,124 @@ so I spent 2-3 hours making some simple tables that a chum asked me for his job.
 This is what I managed to do after getting a clearer idea of what my chum wanted and doing some research online about the formulas and all that:
 https://docs.google.com/spreadsheets/d/1J73IGg9Jm-FKnJ9JYnIFolsd-8A5XhyuLAmA6GaoMmw/edit?usp=sharing
 
+
+
+* This is simply a template for my friend to track their earnings and expenses each month/year with their job and personal finances.
+They work as a freelancer at a tattoo studio, so let me explain a bit about what this Google Sheets does.
+
+- To start with, this file covers the accounting for an entire year, let's say 2023.
+
+- Inside the file, there are 12 identical pages, ranging from "ENERO" (JANUARY in English) to "DICIEMBRE" (DECEMBER in English).
+So, it's not hard to figure out that each page tracks the accounting for a full month.
+
+- There is another page called "TOTALES" (TOTALS in English), which essentially tracks the overall accounting for the entire year.
+There, you can see summaries for each month and the overall totals as well. It also shows the number of jobs completed each month,
+so you can see which types of jobs are more frequent and which ones generate more profits.
+
+- Lastly, there is a page called "CONFIGURACIÓN" (SETTINGS in English), where I have added some data that can be easily modified without affecting the formulas on other pages.
+I also use this page to create backups of the formulas I use, so if there's ever an issue, I can easily copy them back from here.
+
+
+With that said, let me describe each page:
+
+* The first 12 pages are identical as they represent the months, so they all have the same structure.
+
+- A column called "FECHA" (DATE in English), where you manually enter the date of the job. It has a "Date" format.
+
+- A column called "TIPO DE TRABAJO" (TYPE OF JOB in English), with a dropdown menu where you choose the type of job you performed from various options.
+
+- A column called "PRECIO TRABAJO" (JOB PRICE in English), where you manually enter the price for that job. Since each job is unique, you need to enter the price manually.
+This price represents the cost of the job itself, without considering the portion that goes to my friend and the portion that goes to their superior.
+
+- A column called "%" (I think there's no need to translate this XD), which basically shows the percentage that my friend receives for that job.
+On the "CONFIGURACIÓN" page, there is a table with all the types of jobs and their respective percentages. When you select one of the options in the "TIPO DE TRABAJO" column,
+the corresponding percentage for that specific type of job will automatically appear in the "%" column.
+To achieve this, I used the formula:
+=IFS(B3=""; ""; B3='CONFIGURACIÓN'!$A$2; 'CONFIGURACIÓN'!$C$2; B3='CONFIGURACIÓN'!$A$3; 'CONFIGURACIÓN'!$C$3; B3='CONFIGURACIÓN'!$A$4; 'CONFIGURACIÓN'!$C$4; B3='CONFIGURACIÓN'!$A$5;
+'CONFIGURACIÓN'!$C$5; B3='CONFIGURACIÓN'!$A$6; 'CONFIGURACIÓN'!$C$6; B3='CONFIGURACIÓN'!$A$7; 'CONFIGURACIÓN'!$C$7; B3='CONFIGURACIÓN'!$A$8; 'CONFIGURACIÓN'!$C$8; B3='CONFIGURACIÓN'!$A$9;
+'CONFIGURACIÓN'!$C$9; B3='CONFIGURACIÓN'!$A$10; 'CONFIGURACIÓN'!$C$10; B3='CONFIGURACIÓN'!$A$11; 'CONFIGURACIÓN'!$C$11; B3='CONFIGURACIÓN'!$A$12; 'CONFIGURACIÓN'!$C$12; B3='CONFIGURACIÓN'!$A$13;
+'CONFIGURACIÓN'!$C$13; B3='CONFIGURACIÓN'!$A$14; 'CONFIGURACIÓN'!$C$14; B3='CONFIGURACIÓN'!$A$15; 'CONFIGURACIÓN'!$C$15; B3='CONFIGURACIÓN'!$A$16; 'CONFIGURACIÓN'!$C$16; B3<>""; "")
+
+- A column called "INGRESO PERSONAL" (PERSONAL INCOME in English), which calculates how much money my friend earns from each job.
+It automatically applies the percentage from the "%" column to the price in the "PRECIO TRABAJO" column, and returns the corresponding amount of money that my friend receives for that job.
+To achieve this, I used the formula:
+=IFS(B3=""; ""; B3='CONFIGURACIÓN'!$A$2; C3*'CONFIGURACIÓN'!$C$2; B3='CONFIGURACIÓN'!$A$3; C3*'CONFIGURACIÓN'!$C$3; B3='CONFIGURACIÓN'!$A$4; C3*'CONFIGURACIÓN'!$C$4; B3='CONFIGURACIÓN'!$A$5;
+C3*'CONFIGURACIÓN'!$C$5; B3='CONFIGURACIÓN'!$A$6; C3*'CONFIGURACIÓN'!$C$6; B3='CONFIGURACIÓN'!$A$7; C3*'CONFIGURACIÓN'!$C$7; B3='CONFIGURACIÓN'!$A$8; C3*'CONFIGURACIÓN'!$C$8; B3='CONFIGURACIÓN'!$A$9;
+C3*'CONFIGURACIÓN'!$C$9; B3='CONFIGURACIÓN'!$A$10; C3*'CONFIGURACIÓN'!$C$10; B3='CONFIGURACIÓN'!$A$11; C3*'CONFIGURACIÓN'!$C$11; B3<>""; "")
+
+- A column called "GASTOS" (COSTS in English), where my friend records their expenses, such as materials for the job, gasoline, and various other expenses throughout the month.
+
+- A column called "DETALLES" (DETAILS in English), where you can write down additional details about an income or expense to provide more context for the recorded money flow.
+
+Additionally, there are three more important pieces of information:
+
+- "INGRESO TOTAL" (TOTAL INCOME in English), where the values in the "INGRESO PERSONAL" column are summed up, giving my friend the total amount of money generated that month.
+To achieve this, I used the formula:
+=SUMA(E:E)
+
+- "GASTO TOTAL" (TOTAL COST in English), where the values in the "COSTS" column are summed up, giving my friend the total amount of money spent that month.
+To achieve this, I used the formula:
+=SUMA(F:F)
+
+- "BENEFICIO TOTAL" (TOTAL BENEFIT in English), where the difference between "INGRESO TOTAL" and "GASTO TOTAL" is calculated, giving my friend the remaining amount of money at the end of the month.
+Ideally, this number should be positive... XD
+To achieve this, I used the formula:
+=I2-J2
+
+# I know... three very simple formulas, but I'll still write them down.
+
+
+
+Next is the "TOTALS" page:
+
+- The first thing you can see is the breakdown.
+
+- The first column, once again called "TYPE OF JOB," lists all the types of jobs that you can select from the previous pages in their respective columns. It's the same dropdown menu that I mentioned before.
+
+- From there, there are several columns representing each month from "JANUARY" to "DECEMBER."
+To achieve this, I used the formula:
+=SUMAR.SI(ENERO!$B:$B; 'CONFIGURACIÓN'!A2; ENERO!$E:$E)
+
+- Additionally, each month has another column labeled "TIMES" to indicate how many times you have performed each type of job during that month.
+This helps you understand which jobs you perform more or less frequently or if you make too many purchases in a month, for example.
+To achieve this, I used the formula:
+=CONCATENAR("("; CONTAR.SI(ENERO!$B:$B; 'CONFIGURACIÓN'!A2); ")")
+
+Further down, we have something similar to what we had for each month:
+
+- "MONTHLY INCOME" to track how much money you generate each month.
+To achieve this, I used the formula:
+=SUMA(B2:B12)
+
+- "MONTHLY COST" to track how much money you spend each month.
+To achieve this, I used the formula:
+=SUMA(B13:B16)
+
+- "MONTHLY BENEFIT" to calculate how much money you have left in your pocket at the end of each month, after deducting your expenses from your income.
+To achieve this, I used the formula:
+=B17-B18
+
+# Again, simple formulas.
+
+
+Finally, the grand totals:
+
+- "TOTAL ANNUAL INCOME" represents the total income generated throughout the year.
+To achieve this, I used the formula:
+=SUMA(B17:X17)
+
+- "TOTAL ANNUAL COST" represents the total expenses incurred throughout the year.
+To achieve this, I used the formula:
+=SUMA(B18:X18)
+
+- "TOTAL ANNUAL BENEFIT" represents the total amount of money that should be left in your pocket at the end of the year.
+To achieve this, I used the formula:
+=B23-D23
+
+# And one last time, simple formulas.
+
+
+
 It's not very sophisticated, and it may potentially have issues in the future (although I haven't encountered any so far after some testing and verification),
 but I think it's quite good considering I only spent a couple of hours, or maybe a bit more, working on it and started with no knowledge at all.
 
